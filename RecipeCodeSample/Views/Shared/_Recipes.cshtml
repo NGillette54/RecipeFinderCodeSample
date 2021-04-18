@@ -1,0 +1,14 @@
+﻿@model RecipeCodeSample.Models.RecipeResponseModel
+
+@foreach(var recipe in Model.Results)
+{
+    <div class="border-bottom border-info mb-3 pb-3">
+        <div><a href="@recipe.Link" target="_blank" class="font-weight-bold recipe-label">@recipe.Title</a></div>
+        <div><span class="font-weight-bold">Ingredients: </span>@recipe.Ingredients</div>
+    </div>
+}
+
+@if(Model.Results.Count == 0)
+{
+    <div class="text-danger mb-2">No results found.</div>
+}

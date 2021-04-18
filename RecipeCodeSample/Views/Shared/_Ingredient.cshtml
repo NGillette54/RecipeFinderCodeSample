@@ -1,0 +1,7 @@
+﻿@model RecipeCodeSample.Models.Ingredient
+                        
+@using (Html.BeginCollectionItem("Ingredients"))
+{
+
+<div class="ingredient-wrapper badge badge-pill badge-info mr-2">@Html.HiddenFor(m => m.Label)<span>@Model.Label</span><span class="remove badge badge-pill badge-danger">X</span></div>
+}

@@ -1,0 +1,55 @@
+﻿@model RecipeCodeSample.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Home";
+}
+
+<h1 class="text-center pt-3">Recipe Finder</h1>
+<div class="text-center">Add your ingredients to find recipes using those items.</div>
+
+@using (Ajax.BeginForm("Index", "Home", new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "Recipe-Response", InsertionMode = InsertionMode.Replace }, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="enter-ingredient-grouping">
+        <div class="form-group form-group-sm d-inline-block">
+            <input type="text" placeholder="Enter Ingredient" id="Ingredient-Text-Box" />
+        </div>
+        <div class="btn btn-secondary" id="Add-Ingredient">Add</div>
+    </div>
+    <div id="Ingredients" class="mb-3"></div>
+    <button type="submit" class="btn btn-primary find-recipes-button">Find Recipes</button>
+
+    <div id="Recipe-Response" class="border-top border-info mt-4"></div>
+}
+
+
+@section scripts {
+    <script type="text/javascript">
+        function success(response) {
+            $('#Recipe-Response').html(response);
+        }
+
+        $('#Ingredient-Text-Box').keypress(function (e) {
+            if (e.which == 13) {
+                e.preventDefault()
+                $('#Add-Ingredient').click();
+            }
+        })
+
+        $('#Add-Ingredient').on('click', function () {
+            var ingredient = $('#Ingredient-Text-Box').val();
+            $.ajax({
+                async: true,
+                url: '/Home/AddIngredient?ingredient=' + ingredient,
+                success: function (response) {
+                    $('#Ingredients').append(response);
+                    $('#Ingredient-Text-Box').val('');
+                },
+            })
+        })
+
+        $(document).on('click', '.remove', function () {
+            $(this).closest('.ingredient-wrapper').remove();
+        })
+    </script>
+}
